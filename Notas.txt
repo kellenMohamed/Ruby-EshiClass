@@ -1,0 +1,14 @@
+Selenium é um framework
+Cucumber é um ferramenta para usar Gherkin
+Hooks: Controla os eventos (Before, After, etc) para os métodos. Usado no Cucumber
+SitePrism faz interação com elementos e validações (vários métodos prontos como validar se tem um texto X no elemento.)
+	Para isso precisa instanciar o elemento como SitePrism.
+	Facilita como lidar com iFrames ao invés de usar métodos nativos do selenium ou capybara.
+PageObjects: Para cada página haverá uma classe. Cada elemento terá um atributo (Ex. um botão terá um atributo para representálo).
+		Cada ação terá um método.
+
+
+
+imersaorubyguts2021@gmail.com
+https://discord.gg/tXqwSZWD
+
