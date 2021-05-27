@@ -12,3 +12,87 @@ PageObjects: Para cada página haverá uma classe. Cada elemento terá um atribu
 imersaorubyguts2021@gmail.com
 https://discord.gg/tXqwSZWD
 
+
+-- Iniciando o Projetos --
+--
+PASSOS:
+--
+1. Primeiro instalar o ruby e chromedriver (seguir doc de instalação)
+2. Crie uma pasta para o projeto.
+3. Dentro da pasta crie um arquivo Gemfile
+4. Coloque no arquivo as gems que precisam ser criadas:
+source 'https://rubygems.org'
+
+gem 'selenium-webdriver'
+gem 'capybara'
+gem 'site_prism'
+gem 'rspec'
+gem 'cucumber'
+
+5. Abra um terminal no projeto e execute o comando: bundle install
+	Esta execução cria o arquivo Gemfile.lock
+6. Execute o comando cucumber --init
+	Este comando acima cria a estrutura de pastas do cucumber.
+
+7. Dentro da pasta features cria uma pasta chamada "pages"
+8. Dentro da pasta features cria uma pasta specs
+9. Configure o arquivo env.rb, colocando as biblitecas citadas no Gemfile e tbm configurando o Driver avisando que vai usar o site_prism mas será um driver do Selenium
+	Além disso, precisa dizer pro Driver qual o parâmetro de entrada: app e browser.
+	E para não configurar ou baixar o chromeDriver deve-se usar o WebDriverManager que usa o node js.
+	Assim, no browser deve-se colocar o endereço da porta onde o webDriver (URL) está rodando o serviço de driver.
+	Para o webDriver manager deve-se passar a desired capability, que são opções de configuração para o Chrome.
+	Por último deve-se configurar o capybara.
+	Abrir o browser maximizado e configurar o tempo máximo de resposta.
+
+	require 'rspec'
+	require 'selenium-webdriver'
+	require 'capybara'
+	require 'site_prism'
+	require 'rspec'
+	require 'cucumber'
+
+	Capybara.register_driver :site_prism do |app|
+		Capybara::Selenium::Driver.new(app,browser : :remote, :url => 'http://localhost:4444/wd/hub', desired_capabilities => :chrome)
+	end
+
+	Capybara.configure do |config|
+		config.run_server = false
+		Capybara.default_driver = :site_prism
+		Capybara.page.driver.browser.manage.window.maximize
+		config.default_max_wait_time = 10
+		config.app_host = 'http://www.automationpractice.com/index.php'
+	end
+
+
+	Após dentro da pasta "support" criar a classe "App" para que não precise sempre instanciar cada classe criada durante os testes.
+	Assim, no início dos testes ela gera uma instância na nossa page.
+		class App 
+		
+		end
+
+	Após dentro da pasta "support" criar o arquivo de "hook", que é um arquivo que gerencia os momentos do ciclo de teste.
+		* Chama as classes sem precisar dar new para cada uma:
+
+		Before do
+   			 @app = App.new
+		end
+		
+		* Se o cenário falhar ele tira o print de cada falha:
+		* Concatenar uma String com uma variável (ingestão do valor de uma variável dentro de uma String), para isso precisa:
+			usar aspas duplas por fora e o #
+
+		After do |scenario|
+       			 if scenario.failed?
+            			page.save_screenshot("screenshots/#{scenario.name}#{Time.now}_screenshot.png")
+        		 end
+		end  
+
+	Após dentro do pojeto criar o arquivo cucumber.yml que gerará o report (DA FORMA ABAIXO GERA DIRETO NA RAIZ DO PROJETO - isso pode ser configurado passando o caminho antes:)
+		default: --no-source --color --format pretty --format html --out report.html
+
+
+
+
+
+
+
