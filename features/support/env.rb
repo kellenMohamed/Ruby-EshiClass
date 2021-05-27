@@ -1,13 +1,13 @@
 require 'rspec'
 require 'selenium-webdriver'
-require 'capybara'
+require 'capybara/cucumber'
 require 'site_prism'
 require 'rspec'
 require 'cucumber'
 
 Capybara.register_driver :site_prism do |app|
-    Capybara::Selenium::Driver.new(app,browser : :remote, :url => 'http://localhost:4444/wd/hub', desired_capabilities => :chrome)
-
+    Capybara::Selenium::Driver.new(app, browser: :remote, :url => 'http://localhost:4444/wd/hub', :desired_capabilities => :chrome)
+end
 
 Capybara.configure do |config|
 	config.run_server = false

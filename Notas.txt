@@ -46,13 +46,13 @@ gem 'cucumber'
 
 	require 'rspec'
 	require 'selenium-webdriver'
-	require 'capybara'
+	require 'capybara/cucumber'
 	require 'site_prism'
 	require 'rspec'
 	require 'cucumber'
 
 	Capybara.register_driver :site_prism do |app|
-		Capybara::Selenium::Driver.new(app,browser : :remote, :url => 'http://localhost:4444/wd/hub', desired_capabilities => :chrome)
+		Capybara::Selenium::Driver.new(app, browser: :remote, :url => 'http://localhost:4444/wd/hub', :desired_capabilities => :chrome)
 	end
 
 	Capybara.configure do |config|
@@ -90,9 +90,50 @@ gem 'cucumber'
 	Após dentro do pojeto criar o arquivo cucumber.yml que gerará o report (DA FORMA ABAIXO GERA DIRETO NA RAIZ DO PROJETO - isso pode ser configurado passando o caminho antes:)
 		default: --no-source --color --format pretty --format html --out report.html
 
+	
+	Também precisa executar no cmd:
+		webdriver-manager start
+* Depois a feature.
+
+*** Para executar o feature o comando é:
+	cucumber -t @cadastro_dados_fixos
+
+Ao executar será informado os steps sugeridos da execução.
+	Deve-se criar dentro da pasta "step_definitions" o arquivo cadastro_steps.rb
+	E colar os steps citados na execução.
+		Dado('que acesso a p├ígina de login\/cadastro') do
+    			pending # Write code here that turns the phrase above into concrete actions
+  		end
+		*** Tem a barra de escape acima (contrabarra) porque no cenário tinha a barra que é considerada caracter special, por isso ele cria \/
+
+* Após, como já temos a URL criada dentro do arquivo "env.rb" vamos criar a page dentro de "pages".
+	Esta page tem que ter uma classe que herda do Site prism (ser do tipo site prism para ter interação com os elementos como se fosse o Selenium)
+		class CadastroPage < SitePrism::Page
+
+	Para acessar a page tem que colocar o endereço extra da página que está no final da url e usar o método set_url:
+		class CadastroPage < SitePrism::Page
+    			set_url '?controller=authentication&back=my-account'
+		end
+
+******** Voltando aos Steps: ********
+1. Como a classe App vai instanciar as classes temos que incluir na classe App.rb qual classe quer instanciar:
+	class App
+    		def cadastropage
+        		cadastroPage.new
+    		end
+	end
+
+E ai dentro dos steps é só chamar a classe App.
+	Dado('que acesso a p├ígina de login\/cadastro') do
+    		@App.cadastropage.load
+	end
+  
 
 
 
 
 
+**** Toda classe começa com class e termina com end
+**** Todo método começa com def e termina com end
+**** Blocos e funções também terminam com end
 
