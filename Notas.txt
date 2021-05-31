@@ -123,12 +123,59 @@ Ao executar será informado os steps sugeridos da execução.
     		end
 	end
 
-E ai dentro dos steps é só chamar a classe App.
+E ai dentro dos steps é só chamar a classe App para carregar a página.
 	Dado('que acesso a p├ígina de login\/cadastro') do
     		@App.cadastropage.load
 	end
   
 
+Após chama-se o método para cadastrar o email, esse método chamado na cadastro_steps.rb deve ser definido na "cadastro_page.rb" dentro da classe que está sendo criada:
+	  Dado('solicito um novo cadastro para o email {string}') do |email|
+    		@App.cadastropage.iniciar_criacao_conta email
+  	  end
+	OBS: Dentro de || está o parãmetro que será recebido, no caso é o |email|
+
+Após deve-se implementar o método no arquivo "cadastro_page.rb" dentro da classe e agora informando que receberemos elemento:
+	Os elementos do site prism por padrão receberem um css selectors.
+	Se quiser pode passar um :xpath, 'seletor' (não é o nosso caso, passaremos apenas o 'seletor')
+
+
+*** Como achar um elemento dentro de uma lista para seleção. Ex para o estado:
+	Na classe foi definido os campos inspecionados:
+	    	element :state_select,'#uniform-id_state'
+    		# Criando uma lista (para buscar os estados do selector acima):
+    		elements :state_option, '#uniform-id_state option'
+	No método foi tratado o valor a ser buscado:
+        	state_select.click
+        	option = state_options.find {option| option.text.include?("Alabama")} 
+        	option.click
+
+
+*** Após definir os Passos 2,3 e 4 do arquivo cadastro_steps.rb dentro de cadastro_page.rb (com classe e método).
+	Devemos criar a segunda página dentro da pasta "pages" chamada "minha_conta_page.rb"
+	Esta page tem que ter uma classe que herda do Site prism (ser do tipo site prism para ter interação com os elementos como se fosse o Selenium)
+		class MinhaContaPage < SitePrism::Page
+    			set_url '?controller=my-account'
+		end
+
+*** No step "então" precisa fazer as assertions usando o expect:
+	Então('devo ser direcionado à página de minha conta') do
+  		#As assertions devem ser feitas dentro do Step:  
+  		#expect(@app.minhacontapage.acessou_minha_conta).to be_trutly
+  		expect(@app.minhacontapage.page_title.text).to eq('MY ACCOUNT')
+  		expect(@app.minhacontapage.account_name.text).to eq('Kellen Fernandez')
+	end
+
+* Não devemos fazer as assertions dentro da page, pois:
+	a page deve mapear o elemento e definir o elemento.
+		Ex page:
+			class MinhaContaPage < SitePrism::Page
+    				# A page deve mapear o elemento e definir o elemento não as assertions:
+    				set_url '?controller=my-account'
+    				element :page_title,'page-heading'
+   				element :account_name,'[title="View my customer account"]'
+
+			end
 
 
 
