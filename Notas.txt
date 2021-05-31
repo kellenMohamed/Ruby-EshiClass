@@ -178,7 +178,20 @@ Após deve-se implementar o método no arquivo "cadastro_page.rb" dentro da clas
 			end
 
 
+---------------****---------------------
+*** Para setar um email aleatório usando o Faker dentro do método:
+        email.eql?('aleatório') ? Faker::Internet.email(domain: 'guts') : email
 
+# Variáveis:
+@ = é uma variável de instância (ao terminar a execução do seu escopo ela deixa de existir.
+@@ = é uma variável de classe (fica disponível no ciclo de vida da classe)
+$ = é uma variável de escopo global (pode ser acessada de qualquer lugar do código).
+
+*** O Kafer gera nome e outros campos aleatórios como password (para colocar dentro dos campos do método):
+	first_name_field.set Faker::Name.first_name
+        last_name_field.set Faker::Name.last_name
+        password_field.setFaker::Internet.passwd(min_lenght: 5, max_lenght: 10, mix_case: true, special_character: true)
+	mobile_phone.set Faker::PhoneNumber.cell_phone_in_e164 (o comando e164 do fake é para considerar no padrão brasileiro).
 
 **** Toda classe começa com class e termina com end
 **** Todo método começa com def e termina com end

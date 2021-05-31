@@ -1,4 +1,4 @@
-Dado('que acesso a p├ígina de login\/cadastro') do
+Dado('que acesso a página de login\/cadastro') do
   @app.cadastropage.load
 end
   
@@ -13,10 +13,14 @@ end
 Quando('confirmo o cadastro') do
   @app.cadastropage.confirmar_cadastro
 end
+  
+Dado('preencho os campos do formulário com dados válidos aleatórios') do
+  @app.cadastropage.preencher_form_com_dados_aleatorios
+end
 
 Então('devo ser direcionado à página de minha conta') do
   #As assertions devem ser feitas dentro do Step:  
   #expect(@app.minhacontapage.acessou_minha_conta).to be_trutly
   expect(@app.minhacontapage.page_title.text).to eq('MY ACCOUNT')
-  expect(@app.minhacontapage.account_name.text).to eq('Kellen Fernandez')
+  expect(@app.minhacontapage.account_name.text).to eq(@app.cadastropage.account_full_name)
 end

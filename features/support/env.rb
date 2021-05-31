@@ -4,6 +4,7 @@ require 'capybara/cucumber'
 require 'site_prism'
 require 'rspec'
 require 'cucumber'
+require 'faker'
 
 Capybara.register_driver :site_prism do |app|
     Capybara::Selenium::Driver.new(app, browser: :remote, :url => 'http://localhost:4444/wd/hub', :desired_capabilities => :chrome)
