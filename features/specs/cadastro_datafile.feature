@@ -6,10 +6,10 @@ Como um cliente da loja online
 Quero cadastrar uma conta
 Para efeturar compras
 
-@cadastro_dados_faker
-Cenario: Cadastrar cliente com dados validos aleatorios
+@cadastro_datafile
+Cenario: Cadastrar cliente com dados validos de um arquivo externo
 Dado que acesso a pagina de login/cadastro
-E solicito um novo cadastro para o email 'aleatorio'
-E preencho os campos do formulario com dados validos aleatorio
+E solicito um novo cadastro para o email 'padrao'
+E preencho os campos do formulario com dados validos padrao
 Quando confirmo o cadastro
 Entao devo ser direcionado a pagina de minha conta

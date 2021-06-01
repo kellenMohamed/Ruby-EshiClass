@@ -199,6 +199,88 @@ unless: é o oposto do if: se não acontecer isso faz isso (usado no método). N
         end
 
 
+************ --- ************
+
+Para ter um feature que lê um arquivo, precisa:
+
+1. Deve-se criar dentro da pasta "data" um arquivo user_info.yml que vai conter os dados do teste:
+email: "new_user_yml@guts.com"
+gender: "fem"
+first_name: "Ralni"
+last_name: "Fernandez"
+password: "12345"
+day: "20"
+month: "January"
+year: "1986"
+newsletter_: "yes"
+address: "Street A"
+city: "São Carlos"
+state: "Alabama"
+zipcode: "99345"
+phone: "16991565654"
+address_name: "Predio"
+
+
+2. Após deve-se criar um arquivo data.rb dentro da pasta "data" para ter as bibliotecas necessária e o parse do json que será utilizado na cadastro_page.rb:
+require 'json'
+require 'yaml'
+require 'ostruct'
+
+class UserData
+    @data = JSON.parse(YAML.load(File.read('features/supoport/data/user_info.yml')).to_json, object_class: OpenStruct)
+
+    #Método para expor o @data e pegar os dados:
+    #O método já passa a chave que quer e ele devolve o valor da chave, sem precisar de um array para varrer a classe:
+    def self.get(info)
+        @data.send(info)
+    end        
+end     
+
+3. Depois é só ir na cadastro_page.rb (dentro da classe: class CadastroPage < SitePrism::Page) e colocar no método para pegar os dados do arquivo user_info.yml:
+
+    # Implementar o método que foi chamado no step da cadastro_steps.rb
+    # Inspecione a página do teste para saber o nome dos elementos.
+    # Método para o step 2:
+    def iniciar_criacao_conta(email)
+        # Criar a ação para os elementos:
+        case email
+        when 'aleatorio'
+            @email = Faker::Internet.email(domain:'guts')
+        when 'padrao'
+            @email = Data.get(email)
+        else
+            @email = email
+        end
+        # No comando abaixo com o set ele sabe que precisa pegar o valor do email aleatório:
+        #puts @email = email.eql?('aleatorio') ? Faker::Internet.email(domain:'guts') : email
+        email_create_account_field.set email
+        create_account_btn.click
+    end
+
+def preencher_form_com_dados_datafile
+        #Em Data.get após passa a chave (nome do campo) dentro do arquivo user_info.yml:
+        Data.get(gender).qdl?('fem') ? title_fem_rd.set(true) : title_mas_rd.set(true)
+        @@first_name = Data.get(first_name)
+        first_name_field.set  @@first_name
+        @@last_name = Data.get(last_name)
+        last_name_field.set @@last_name
+        password_field.set Data.get(password)
+        days_select.select Data.get(day)
+        month_select.select Data.get(month)
+        year_select.select Data.get(year)
+        #unless é o oposto do if: se não acontecer isso faz isso
+        unless Data.get(newsletter).eql?('no') 
+            newsletter_checkbox.click
+        end
+        address_field.set Data.get(address)
+        city_field.set Data.get(city)
+        state_select.click
+        option = state_options.find {option| option.text.include?(Data.get(state))} 
+        option.click
+        zip_code_field.set Data.get(zipcode)
+        mobile_phone.set Data.get(phone)
+        address_alias_field.set Data.get(address_name)  
+    end
 
 
 **** Toda classe começa com class e termina com end

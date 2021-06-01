@@ -32,7 +32,12 @@ Dado ('preencho os campos do formulario com <gender>,<first_name>,<last_name>,<p
   @app.cadastropage.preencher_form_com_dados_de_exemplos(gender,first_name,last_name,password,day,month,year,newsletter,company,address,city,zipcode,state,phone,address_name)
 end
 
-Então('devo ser direcionado a pagina de minha conta') do
+# Step criado para o feature cadastro_datafile: 
+Dado('preencho os campos do formulario com dados validos padrao') do
+  @app.cadastropage.preencher_form_com_dados_datafile
+end
+
+Entao('devo ser direcionado a pagina de minha conta') do
   #As assertions devem ser feitas dentro do Step:  
   #expect(@app.minhacontapage.acessou_minha_conta).to be_trutly
   expect(@app.cadastropage.page_title.text).to eq('MY ACCOUNT')

@@ -31,9 +31,17 @@ class CadastroPage < SitePrism::Page
     # Inspecione a página do teste para saber o nome dos elementos.
     # Método para o step 2:
     def iniciar_criacao_conta(email)
-        #Criar a ação para os elementos:
+        # Criar a ação para os elementos:
+        case email
+        when 'aleatorio'
+            @email = Faker::Internet.email(domain:'guts')
+        when 'padrao'
+            @email = UserData.get(email)
+        else
+            @email = email
+        end
         # No comando abaixo com o set ele sabe que precisa pegar o valor do email aleatório:
-        puts @email = email.eql?('aleatorio') ? Faker::Internet.email(domain:'guts') : email
+        #puts @email = email.eql?('aleatorio') ? Faker::Internet.email(domain:'guts') : email
         email_create_account_field.set email
         create_account_btn.click
     end
@@ -112,11 +120,37 @@ class CadastroPage < SitePrism::Page
         address_alias_field.set address_name       
     end
 
-    # Método para o step 4:
+    def preencher_form_com_dados_datafile
+        #Em UserData.get após passa a chave (nome do campo) dentro do arquivo user_info.yml:
+        UserData.get('gender').qdl?('fem') ? title_fem_rd.set(true) : title_mas_rd.set(true)
+        @@first_name = UserData.get('first_name')
+        first_name_field.set  @@first_name
+        @@last_name = UserData.get('last_name')
+        last_name_field.set @@last_name
+        password_field.set UserData.get('password')
+        days_select.select UserData.get('day')
+        month_select.select UserData.get('month')
+        year_select.select UserData.get('year')
+        #unless é o oposto do if: se não acontecer isso faz isso
+        unless UserData.get(n'ewsletter').eql?('no') 
+            newsletter_checkbox.click
+        end
+        address_field.set UserData.get('address')
+        city_field.set UserData.get('city')
+        state_select.click
+        option = state_options.find {option| option.text.include?(UserData.get('state'))} 
+        option.click
+        zip_code_field.set UserData.get('zipcode')
+        mobile_phone.set UserData.get('phone')
+        address_alias_field.set UserData.get('address_name')  
+    end
+    
+    # Método para o step 4 (When):
     def confirmar_cadastro
         register_btn.click
     end
     
+    # Método para o step 5 (Then):
     def account_full_name
         "#{@@first_name} #{@@last_name}"
     end
