@@ -9,6 +9,7 @@ class CadastroPage < SitePrism::Page
     element :email_create_account_field,'#email_create'
     element :create_account_btn, '#SubmitCreate'
     element :title_fem_rd,'#id_gender2'
+    element :title_masc_rd,'#id_gender1'
     element :first_name_field,'#customer_firstname'
     element :last_name_field,'#customer_lastname'
     element :password_field,'#passwd'
@@ -16,14 +17,14 @@ class CadastroPage < SitePrism::Page
     element :month_select,'#months'
     element :year_select,'#years'
     element :newsletter_checkbox,'#newslatter'
-    element :addres_field,'#address1'
+    element :address_field,'#address1'
     element :city_field,'#city'
     element :state_select,'#uniform-id_state'
     # Criando uma lista (para buscar os estados do selector acima):
     elements :state_option, '#uniform-id_state option'
     element :zip_code_field,'#postcode'
     element :mobile_phone,'#phone_mobile'
-    element :addres_alias_field,'#alias'
+    element :address_alias_field,'#alias'
     element :register_btn,'#submitAccount'
 
     # Implementar o método que foi chamado no step da cadastro_steps.rb
@@ -32,7 +33,7 @@ class CadastroPage < SitePrism::Page
     def iniciar_criacao_conta(email)
         #Criar a ação para os elementos:
         # No comando abaixo com o set ele sabe que precisa pegar o valor do email aleatório:
-        puts @email = email.eql?('aleatorio') ? Faker::Internet.email(domain: 'guts') : email
+        puts @email = email.eql?('aleatorio') ? Faker::Internet.email(domain:'guts') : email
         email_create_account_field.set email
         create_account_btn.click
     end
@@ -49,14 +50,14 @@ class CadastroPage < SitePrism::Page
         month_select.select 'January'
         year_select.select '1986'
         newsletter_checkbox.click
-        addres_field.set 'Street A'
+        address_field.set 'Street A'
         city_field.set 'São Carlos'
         state_select.click
         option = state_options.find {option| option.text.include?("Alabama")} 
         option.click
         zip_code_field.set '99345'
         mobile_phone.set '5516991565720'
-        addres_alias_field.set 'home'
+        address_alias_field.set 'home'
     end
     
     # Método para o terceiro step, para preencher os valores na UI com dados aleatórios:
@@ -71,14 +72,44 @@ class CadastroPage < SitePrism::Page
         month_select.select 'January'
         year_select.select '1986'
         newsletter_checkbox.click
-        addres_field.set 'Street A'
+        address_field.set 'Street A'
         city_field.set 'São Carlos'
         state_select.click
         option = state_options.find {option| option.text.include?("Alabama")} 
         option.click
         zip_code_field.set '99345'
         mobile_phone.set Faker::PhoneNumber.cell_phone_in_e164
-        addres_alias_field.set 'Home'
+        address_alias_field.set 'Home'
+    end
+
+    ### Os 2 steps abaixo são para o feature cadastro_exemplos, os demais são a finalização do Então de todos os features:
+    def iniciar_criacao_conta2(email)
+        email_create_account_field.set email
+        create_account_btn.click
+    end
+
+    def preencher_form_com_dados_de_exemplos(gender,first_name,last_name,password,day,month,year,newsletter,company,address,city,zipcode,state,phone,address_name)
+        gender.qdl?('fem') ? title_fem_rd.set(true) : title_mas_rd.set(true)
+        @@first_name = first_name
+        first_name_field.set  @@first_name
+        @@last_name = last_name
+        last_name_field.set @@last_name
+        password_field.set password
+        days_select.select day
+        month_select.select month
+        year_select.select year
+        #unless é o oposto do if: se não acontecer isso faz isso
+        unless newsletter.eql?('no') 
+            newsletter_checkbox.click
+        end
+        address_field.set address
+        city_field.set city
+        state_select.click
+        option = state_options.find {option| option.text.include?(state)} 
+        option.click
+        zip_code_field.set zipcode
+        mobile_phone.set phone
+        address_alias_field.set address_name       
     end
 
     # Método para o step 4:

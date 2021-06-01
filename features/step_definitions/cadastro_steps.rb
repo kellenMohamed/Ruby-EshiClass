@@ -18,6 +18,20 @@ Dado('preencho os campos do formulario com dados validos aleatorios') do
   @app.cadastropage.preencher_form_com_dados_aleatorios
 end
 
+### Steps necessário para a Feature cadastro_exemplos, pois não aceitou o step 2 no início deste arquivo:
+Dado('solicito um novo cadastro para o email <email>') do
+  @app.cadastropage.iniciar_criacao_conta2(email)
+end
+
+#Step quando recebe valores nos exemplos: 
+#Dado('preencho os campos do formulario com {string},{string},{string},{string},{string},{string},{string},{string},{string},{string},{string},{string},{string},{string},{string}') do |gender,first_name,last_name,password,day,month,year,newsletter,company,address,city,zipcode,state,phone,address_name|
+#  @app.cadastropage.preencher_form_com_dados_de_exemplos(gender,first_name,last_name,password,day,month,year,newsletter,company,address,city,zipcode,state,phone,address_name)
+#end
+
+Dado ('preencho os campos do formulario com <gender>,<first_name>,<last_name>,<password>,<day>,<month>,<year>,<newsletter>,<company>,<address>,<city>,<zipcode>,<state>,<phone>,<address_name>')  do
+  @app.cadastropage.preencher_form_com_dados_de_exemplos(gender,first_name,last_name,password,day,month,year,newsletter,company,address,city,zipcode,state,phone,address_name)
+end
+
 Então('devo ser direcionado a pagina de minha conta') do
   #As assertions devem ser feitas dentro do Step:  
   #expect(@app.minhacontapage.acessou_minha_conta).to be_trutly

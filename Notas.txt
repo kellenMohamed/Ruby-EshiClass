@@ -193,7 +193,16 @@ $ = é uma variável de escopo global (pode ser acessada de qualquer lugar do c�
         password_field.setFaker::Internet.passwd(min_lenght: 5, max_lenght: 10, mix_case: true, special_character: true)
 	mobile_phone.set Faker::PhoneNumber.cell_phone_in_e164 (o comando e164 do fake é para considerar no padrão brasileiro).
 
+unless: é o oposto do if: se não acontecer isso faz isso (usado no método). No exemplo abaixo se não for Não ele executa o click:
+	unless newsletter.eql?('no') 
+            newsletter_checkbox.click
+        end
+
+
+
+
 **** Toda classe começa com class e termina com end
 **** Todo método começa com def e termina com end
 **** Blocos e funções também terminam com end
+
 
