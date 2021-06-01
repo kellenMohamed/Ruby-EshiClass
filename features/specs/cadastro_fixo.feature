@@ -7,9 +7,9 @@ Quero cadastrar uma conta
 Para efeturar compras
 
 @cadastro_dados_fixos
-Cenário: Cadastrar cliente com dados válidos e fixos
-Dado que acesso a página de login/cadastro
-E solicito um novo cadastro para o email 'imersao_ruby_fron2@guts.com.br'
-E preencho os campos do formulário com dados válidos fixos
+Cenario: Cadastrar cliente com dados validos e fixos
+Dado que acesso a pagina de login/cadastro
+E solicito um novo cadastro para o email 'imersao_ruby_fron3@guts.com.br'
+E preencho os campos do formulario com dados validos fixos
 Quando confirmo o cadastro
-Então devo ser direcionado à página de minha conta
+Entao devo ser direcionado a pagina de minha conta

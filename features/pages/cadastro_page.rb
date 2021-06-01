@@ -32,7 +32,7 @@ class CadastroPage < SitePrism::Page
     def iniciar_criacao_conta(email)
         #Criar a ação para os elementos:
         # No comando abaixo com o set ele sabe que precisa pegar o valor do email aleatório:
-        puts @email = email.eql?('aleatório') ? Faker::Internet.email(domain: 'guts') : email
+        puts @email = email.eql?('aleatorio') ? Faker::Internet.email(domain: 'guts') : email
         email_create_account_field.set email
         create_account_btn.click
     end

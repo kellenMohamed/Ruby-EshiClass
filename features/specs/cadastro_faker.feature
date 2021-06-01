@@ -7,9 +7,9 @@ Quero cadastrar uma conta
 Para efeturar compras
 
 @cadastro_dados_faker
-Cenário: Cadastrar cliente com dados válidos aleatórios
-Dado que acesso a página de login/cadastro
-E solicito um novo cadastro para o email 'aleatório'
-E preencho os campos do formulário com dados válidos aleatório
+Cenario: Cadastrar cliente com dados validos aleatorios
+Dado que acesso a pagina de login/cadastro
+E solicito um novo cadastro para o email 'aleatorio'
+E preencho os campos do formulario com dados válidos aleatorio
 Quando confirmo o cadastro
-Então devo ser direcionado à página de minha conta
+Entao devo ser direcionado a pagina de minha conta
